@@ -95,43 +95,43 @@ A frequency counts how fast a signal oscillates in *time* (rad/s). A wavenumber 
 
 Starting from the raw matrix $S(x, t)$, each axis is converted separately:
 
-1. **Fast time $t$ → $K_r$.** Since we have an FMCW radar, this step is a simple change of variable. Why? Consider the IF signal (cf. Section 2.1), for a target at range $R$ with delay $\tau$. Rearranging its phase gives
+**1. Fast time $t$ → $K_r$.** Since we have an FMCW radar, this step is a simple change of variable. Why? Consider the IF signal (cf. Section 2.1), for a target at range $R$ with delay $\tau$. Rearranging its phase gives
 
-   $$
-   \Delta\varphi(t) = -2\pi\,(f_c + \alpha t)\,\tau \;+\; \pi\alpha\tau^2 .
-   $$
+$$
+\Delta\varphi(t) = -2\pi\,(f_c + \alpha t)\,\tau \;+\; \pi\alpha\tau^2 .
+$$
 
-   Let's ignore the second term, the RVP (it is removed in practice, cf. Section 2.5.4). Remembering that $\tau = 2R/c$, and defining $f(t) = f_c + \alpha t$, the first term becomes
+Let's ignore the second term, the RVP (it is removed in practice, cf. Section 2.5.4). Remembering that $\tau = 2R/c$, and defining $f(t) = f_c + \alpha t$, the first term becomes
 
-   $$
-   -2\pi f(t)\,\tau \;=\; -2\pi f(t)\,\frac{2R}{c} \;=\; -\frac{4\pi f(t)}{c}\,R .
-   $$
+$$
+-2\pi f(t)\,\tau \;=\; -2\pi f(t)\,\frac{2R}{c} \;=\; -\frac{4\pi f(t)}{c}\,R .
+$$
 
-   Defining
+Defining
 
-   $$
-   K_r(t) = \frac{4\pi\,f(t)}{c},
-   $$
+$$
+K_r(t) = \frac{4\pi\,f(t)}{c},
+$$
 
-   the IF signal can be rewritten as
+the IF signal can be rewritten as
 
-   $$
-   s(t) = e^{-jK_r(t)\,R} .
-   $$
+$$
+s(t) = e^{-jK_r(t)\,R} .
+$$
 
-   Each fast-time sample was recorded while the radar was transmitting one particular frequency $f(t)$, so it already *is* one $K_r$ sample: no Fourier transform is needed, only a relabeling of the axis. Since $t$ is uniformly sampled, so is $K_r$, which spans
+Each fast-time sample was recorded while the radar was transmitting one particular frequency $f(t)$, so it already *is* one $K_r$ sample: no Fourier transform is needed, only a relabeling of the axis. Since $t$ is uniformly sampled, so is $K_r$, which spans
 
-   $$
-   K_r \in \left[\frac{4\pi f_c}{c},\; \frac{4\pi (f_c + B)}{c}\right].
-   $$
+$$
+K_r \in \left[\frac{4\pi f_c}{c},\; \frac{4\pi (f_c + B)}{c}\right].
+$$
 
-   Consider now a target at $(x_t, R_0)$. Its distance from the platform at position $x$ was defined in $(\dagger)$ (cf. Section 2.4). Inserting it into the IF signal gives
+Consider now a target at $(x_t, R_0)$. Its distance from the platform at position $x$ was defined in $(\dagger)$ (cf. Section 2.4). Inserting it into the IF signal gives
 
-   $$
-   S(x, K_r) = \exp\Big(-j K_r \sqrt{R_0^2 + (x - x_t)^2}\Big).
-   $$
+$$
+S(x, K_r) = \exp\Big(-j K_r \sqrt{R_0^2 + (x - x_t)^2}\Big).
+$$
 
-2. **Position $x$ → $K_x$.** Take a Fourier transform along the $x$ dimension.
+**2. Position $x$ → $K_x$.** Take a Fourier transform along the $x$ dimension.
 
 With the two steps described above, and without getting into the math of the Fourier transform along $x$ (it involves the principle of stationary phase and a few substitutions), it can be shown that the data in the wavenumber domain for a point target acquired with a stripmap SAR at $(x_t, R_0)$ is
 
