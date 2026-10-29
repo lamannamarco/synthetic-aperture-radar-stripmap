@@ -23,14 +23,14 @@ This section took definitely longer than expected to write. Let me know if you f
 
 ### 2.1 FMCW radar and the IF signal
 
-An FMCW radar transmits a linear chirp, $s_{RF}(t)$. The chirp duration is $T_c$ and has a given bandwidth $B$. The initial and final frequency are $f_c$ and $f_c + B$. Defining $\alpha = B/T_c$, $f(t) = f_c + \alpha \thinspace  t$ in $t \in [0, T_c]$.
+An FMCW radar transmits a linear chirp, $s_{RF}(t)$. The chirp duration is $T_c$ and has a given bandwidth $B$. The initial and final frequency are $f_c$ and $f_c + B$. Defining $\alpha = B/T_c$, $f(t) = f_c + \alpha   t$ in $t \in [0, T_c]$.
 
 Assuming that a target is at a given range $R$, the radar will receive an echo from the target, $s_{RF}(t-\tau)$, where $\tau = 2R/c$ ($c$ is the speed of light).
 
 Mixing the echo with the transmitted chirp, i.e. multiplying the received signal by the complex conjugate of the transmitted one, gives the IF signal used for processing:
 
 $$
-s(t) = \exp\Big(-j 2\pi \big(\underbrace{\alpha\tau\thinspace  t}_{\text{beat frequency}} + \underbrace{f_c \tau}_{\text{carrier phase}} - \underbrace{\tfrac{\alpha}{2}\tau^2}_{\text{RVP}}\big)\Big).
+s(t) = \exp\Big(-j 2\pi \big(\underbrace{\alpha\tau  t}_{\text{beat frequency}} + \underbrace{f_c \tau}_{\text{carrier phase}} - \underbrace{\tfrac{\alpha}{2}\tau^2}_{\text{RVP}}\big)\Big).
 $$
 
 As a reminder, $t$ is typically called "fast time", because it is the time inside a chirp, which runs much faster than, for example, the time it takes to acquire the entire dataset.
@@ -98,31 +98,31 @@ Starting from the raw matrix $S(x, t)$, each axis is converted separately:
 **1. Fast time $t$ → $K_r$.** Since we have an FMCW radar, this step is a simple change of variable. Why? Consider the IF signal (cf. Section 2.1), for a target at range $R$ with delay $\tau$. Rearranging its phase gives
 
 $$
-\Delta\varphi(t) = -2\pi\thinspace (f_c + \alpha t)\thinspace \tau \thickspace +\thickspace  \pi\alpha\tau^2 .
+\Delta\varphi(t) = -2\pi (f_c + \alpha t) \tau \ +\  \pi\alpha\tau^2 .
 $$
 
 Let's ignore the second term, the RVP (it is removed in practice, cf. Section 2.5.4). Remembering that $\tau = 2R/c$, and defining $f(t) = f_c + \alpha t$, the first term becomes
 
 $$
--2\pi f(t)\thinspace \tau \thickspace =\thickspace  -2\pi f(t)\thinspace \frac{2R}{c} \thickspace =\thickspace  -\frac{4\pi f(t)}{c}\thinspace R .
+-2\pi f(t) \tau \ =\  -2\pi f(t) \frac{2R}{c} \ =\  -\frac{4\pi f(t)}{c} R .
 $$
 
 Defining
 
 $$
-K_r(t) = \frac{4\pi\thinspace f(t)}{c},
+K_r(t) = \frac{4\pi f(t)}{c},
 $$
 
 the IF signal can be rewritten as
 
 $$
-s(t) = e^{-jK_r(t)\thinspace R} .
+s(t) = e^{-jK_r(t) R} .
 $$
 
 Each fast-time sample was recorded while the radar was transmitting one particular frequency $f(t)$, so it already *is* one $K_r$ sample: no Fourier transform is needed, only a relabeling of the axis. Since $t$ is uniformly sampled, so is $K_r$, which spans
 
 $$
-K_r \in \left[\frac{4\pi f_c}{c},\thickspace  \frac{4\pi (f_c + B)}{c}\right].
+K_r \in \left[\frac{4\pi f_c}{c},\  \frac{4\pi (f_c + B)}{c}\right].
 $$
 
 Consider now a target at $(x_t, R_0)$. Its distance from the platform at position $x$ was defined in $(\dagger)$ (cf. Section 2.4). Inserting it into the IF signal gives
@@ -136,7 +136,7 @@ $$
 With the two steps described above, and without getting into the math of the Fourier transform along $x$ (it involves the principle of stationary phase and a few substitutions), it can be shown that the data in the wavenumber domain for a point target acquired with a stripmap SAR at $(x_t, R_0)$ is
 
 $$
-S(K_x, K_r) = \exp\Big(-j \sqrt{K_r^2 - K_x^2}\thickspace  R_0 \thickspace -\thickspace  j K_x x_t\Big). \quad (\star)
+S(K_x, K_r) = \exp\Big(-j \sqrt{K_r^2 - K_x^2}\  R_0 \ -\  j K_x x_t\Big). \quad (\star)
 $$
 
 #### 2.5.3 Why use the wavenumber domain?
@@ -144,7 +144,7 @@ $$
 It can be shown that, in the wavenumber domain, an ideal point at $(x_t, R_0)$ has the following spectrum
 
 $$
-S_p(K_x, K_y) = \exp\big(-j\thinspace K_y\thinspace R_0 \thickspace -\thickspace  j\thinspace K_x\thinspace x_t\big), \quad (\spadesuit)
+S_p(K_x, K_y) = \exp\big(-j K_y R_0 \ -\  j K_x x_t\big), \quad (\spadesuit)
 $$
 
 where $K_x$ and $K_y$ are the wavenumbers along the azimuth and range axes of the image, respectively. Note that the phase is **linear** along both axes, so a 2D inverse FFT gives a sharp peak at $(x_t, R_0)$.
@@ -183,10 +183,10 @@ $$
 
 **Step 2b (only if the platform moves during a chirp).** So far we assumed that each chirp is taken at a single position. If the platform keeps moving, the sample at fast time $t$ was really taken at $x + v t$. A shift along $x$ is a linear phase along $K_x$, so a single multiplication by $e^{-jK_x v t}$ undoes it.
 
-**Step 3: reference function multiply.** We multiply the whole spectrum by $e^{+j\sqrt{K_r^2 - K_x^2}\thinspace R_\text{ref}}$, where $R_\text{ref}$ is the range of the scene center. A target at $(x_t, R_0)$ becomes
+**Step 3: reference function multiply.** We multiply the whole spectrum by $e^{+j\sqrt{K_r^2 - K_x^2} R_\text{ref}}$, where $R_\text{ref}$ is the range of the scene center. A target at $(x_t, R_0)$ becomes
 
 $$
-\exp\Big(-j \sqrt{K_r^2 - K_x^2}\thickspace (R_0 - R_\text{ref}) \thickspace -\thickspace  j K_x x_t\Big).
+\exp\Big(-j \sqrt{K_r^2 - K_x^2}\ (R_0 - R_\text{ref}) \ -\  j K_x x_t\Big).
 $$
 
 Why do this? The reference function is the (conjugated) spectrum of a point target placed at range $R_\text{ref}$. Typically, we know at what range we want to image, and $R_{ref}$ is usually the "center of the scene" *(I am sweeping under the rug a few other things, but I am trying to keep this section short)*.
@@ -199,14 +199,14 @@ $$
 
 which is linear in $K_y$ and $K_x$ for **every** target. Step 3 handled the targets at $R_\text{ref}$; step 4 handles everyone else, by correcting only the *difference* between each target and the scene center.
 
-**Step 5: 2D inverse FFT.** $K_y \rightarrow$ range, $K_x \rightarrow$ azimuth. A phase that is linear in both axes is a single 2D tone, and its inverse transform is a single peak at $(x_t,\thinspace  R_0 - R_\text{ref})$. Because step 3 moved the range origin, the range axis of the image is relative to the scene center: adding $R_\text{ref}$ back places the target at its true range $R_0$.
+**Step 5: 2D inverse FFT.** $K_y \rightarrow$ range, $K_x \rightarrow$ azimuth. A phase that is linear in both axes is a single 2D tone, and its inverse transform is a single peak at $(x_t,  R_0 - R_\text{ref})$. Because step 3 moved the range origin, the range axis of the image is relative to the scene center: adding $R_\text{ref}$ back places the target at its true range $R_0$.
 
 **Example** The figure below follows a single target through the domains of Section 2.5. It sits 19 m beyond $R_\text{ref}$, so that every step has something to do:
 
 ![One target through the domains](docs/figures/one_target_domains.png)
 
 - **(a)** Domain $(x, R)$, after range compression (inverse FFT over $t$, since the beat frequency is negative), showing the hyperbola described in Section 2.4.
-- **(b)** Domain $(K_x, K_r)$, after steps 1 to 3 (real part). The fringes are curved, because the phase $-\sqrt{K_r^2 - K_x^2}\thinspace (R_0 - R_\text{ref})$ is not linear in $K_r$ and $K_x$.
+- **(b)** Domain $(K_x, K_r)$, after steps 1 to 3 (real part). The fringes are curved, because the phase $-\sqrt{K_r^2 - K_x^2} (R_0 - R_\text{ref})$ is not linear in $K_r$ and $K_x$.
 - **(c)** Domain $(K_x, K_y)$, after the Stolt interpolation. The phase is now $-K_y (R_0 - R_\text{ref})$: straight, evenly spaced fringes, i.e. a single 2D frequency.
 - **(d)** Domain $(x, R)$, after the 2D inverse FFT: that single frequency becomes a single point, at the true target position (white cross).
 
@@ -214,7 +214,7 @@ which is linear in $K_y$ and $K_x$ for **every** target. Step 3 handled the targ
 
 For the purposes of this discussion, let's leave aside the $K_x$ term, which is already linear.
 
-Recall that, after step 3, a target at $R_0 = R_\text{ref} + \Delta R$ has the phase $-\sqrt{K_r^2 - K_x^2}\thinspace \Delta R$ at every point $(K_r, K_x)$ of the spectrum, while an ideal point has the phase $-K_y\thinspace \Delta R$. The figure below shows the difference.
+Recall that, after step 3, a target at $R_0 = R_\text{ref} + \Delta R$ has the phase $-\sqrt{K_r^2 - K_x^2} \Delta R$ at every point $(K_r, K_x)$ of the spectrum, while an ideal point has the phase $-K_y \Delta R$. The figure below shows the difference.
 
 ![Stolt: curved vs straight fringes](docs/figures/stolt_phase.png)
 
@@ -222,8 +222,8 @@ The left panel shows our data, plotted over $(K_r, K_x)$, in which the fringes a
 
 The key idea is that the values are right, but they sit at the wrong place. Specifically, compare the two phases:
 
-- what we have, at $(K_r, K_x)$: $\thickspace -\sqrt{K_r^2 - K_x^2}\thickspace \Delta R$
-- what we want, at $(K_y, K_x)$: $\thickspace -K_y\thinspace \Delta R$
+- what we have, at $(K_r, K_x)$: $\ -\sqrt{K_r^2 - K_x^2}\ \Delta R$
+- what we want, at $(K_y, K_x)$: $\ -K_y \Delta R$
 
 They are the same expression once we write $K_y = \sqrt{K_r^2 - K_x^2}$. In other words, each measured sample already has the value of an ideal sample; it is just drawn at the wrong position on the horizontal axis. The Stolt interpolation therefore has two jobs, illustrated in the figure below.
 ![Stolt mapping](docs/figures/stolt_mapping.png)
@@ -284,7 +284,7 @@ python docs/make_figures.py
 | 1 | `remove_rvp()` | Zero-padded FFT over fast time, multiply by $e^{-j\pi f^2/\alpha}$, inverse FFT, Hann window over fast time |
 | 2 | `azimuth_fft()` | FFT over chirps |
 | 2b | `compensate_motion_during_chirp()` | Multiply by $e^{-jK_x v t}$, only if `stop_and_go=False` |
-| 3 | `reference_function_multiply()` | Multiply by $e^{+j\sqrt{K_r^2 - K_x^2}\thinspace R_\text{ref}}$ |
+| 3 | `reference_function_multiply()` | Multiply by $e^{+j\sqrt{K_r^2 - K_x^2} R_\text{ref}}$ |
 | 4 | `stolt_interpolation()` | Loop over $K_x$ rows, `np.interp` from $\sqrt{K_r^2 - K_x^2}$ onto the $K_y$ grid |
 | 5 | `to_image()` | Inverse FFT over $K_y$ (range) and over $K_x$ (azimuth), then add $R_\text{ref}$ to the range axis |
 
